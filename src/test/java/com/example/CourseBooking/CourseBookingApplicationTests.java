@@ -1,5 +1,6 @@
 package com.example.CourseBooking;
 
+import com.example.CourseBooking.models.Booking;
 import com.example.CourseBooking.models.Course;
 import com.example.CourseBooking.models.Customer;
 import com.example.CourseBooking.repositories.BookingRepository;
@@ -55,6 +56,18 @@ class CourseBookingApplicationTests {
 	public void canGetAllCustomersForCourse(){
 		List<Customer> foundCustomers = customerRepository.findByBookingsCourseName("Python Programming");
 		assertEquals(2, foundCustomers.size());
+	}
+
+	@Test
+	public void canGetAllCoursesForCustomer(){
+		List<Course> foundCourses = courseRepository.findByBookingsCustomerName("Emily");
+		assertEquals(2, foundCourses.size());
+	}
+
+	@Test
+	public void canGetAllBookingsByDate(){
+		List<Booking> foundBookings = bookingRepository.findByDate("04-05-21");
+		assertEquals(1, foundBookings.size());
 	}
 
 }
