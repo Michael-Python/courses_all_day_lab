@@ -19,25 +19,32 @@ public class CustomerController {
     public ResponseEntity getAllCustomersAndFilters(
             @RequestParam(required = false, name = "course") String course,
             @RequestParam(required = false, name = "customerTown") String customerTown,
-            @RequestParam(required = false, name = "courseName") String courseName,
-            @RequestParam(required = false, name = "age") Integer age
+//            @RequestParam(required = false, name = "courseName") String courseName,
+            @RequestParam(required = false, name = "age") Integer age,
+            @RequestParam(required = false, name = "name") String name
 
     ){
         if(course != null){
-            return new ResponseEntity(customerRepository.findByBookingsCourseName(course), HttpStatus.OK);
+            return new ResponseEntity(customerRepository.findByBookingsCourseNameIgnoreCase(course), HttpStatus.OK);
         }
 
-        if(age == null && customerTown != null && courseName != null){
-            return new ResponseEntity(customerRepository.findByTownAndBookingsCourseName(customerTown, courseName),HttpStatus.OK);
+        if(age == null && customerTown != null && name != null){
+            return new ResponseEntity(customerRepository.findByTownIgnoreCaseAndBookingsCourseNameIgnoreCase(customerTown, course),HttpStatus.OK);
         }
 
-        if(age != null && customerTown != null && courseName != null){
-            return new ResponseEntity(customerRepository.findByAgeGreaterThanAndTownAndBookingsCourseName(age, customerTown, courseName),HttpStatus.OK);
+        //if you don't know about the parameters put the one with the most conditions first
+
+        if(age != null && customerTown != null && name != null){
+            return new ResponseEntity(customerRepository.findByAgeGreaterThanAndTownIgnoreCaseAndBookingsCourseNameIgnoreCase(age, customerTown, name),HttpStatus.OK);
         }
 
 
         if(age!= null){
             return new ResponseEntity(customerRepository.findByAgeGreaterThan(age), HttpStatus.OK);
+        }
+
+        if(name!= null){
+            return new ResponseEntity(customerRepository.findByNameIgnoreCase(name), HttpStatus.OK);
         }
 
 
